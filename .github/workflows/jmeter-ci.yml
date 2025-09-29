@@ -14,6 +14,11 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        
+      - name: Prepare results folder
+        run: |
+        mkdir results\gmo-report
+        shell: cmd
 
       - name: Run GMO-Auto Test
         run: |
