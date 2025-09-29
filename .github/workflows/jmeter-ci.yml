@@ -3,7 +3,9 @@ name: CI - JMeter Performance Tests
 on:
   push:
     branches:
-      - main  # Trigger workflow on push to main branch
+      - main
+    paths:
+      - 'jmeter-tests/**'  # Only trigger when files in this folder change
 
 jobs:
   run-jmeter:
@@ -18,10 +20,10 @@ jobs:
           "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\GMO-Auto.jmx -l results\gmo-results.jtl -e -o results\gmo-report
         shell: cmd
 
-      - name: Run JPetStore Test
-        run: |
-          "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\JPetStore.jmx -l results\jpetstore-results.jtl -e -o results\jpetstore-report
-        shell: cmd
+      # - name: Run JPetStore Test
+      # run: |
+      #   "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\JPetStore.jmx -l results\jpetstore-results.jtl -e -o results\jpetstore-report
+      # shell: cmd
 
       - name: Upload GMO-Auto Report
         uses: actions/upload-artifact@v3
@@ -29,8 +31,8 @@ jobs:
           name: gmo-auto-report
           path: results/gmo-report
 
-      - name: Upload JPetStore Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: jpetstore-report
-          path: results/jpetstore-report
+      # - name: Upload JPetStore Report
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: jpetstore-report
+      #    path: results/jpetstore-report

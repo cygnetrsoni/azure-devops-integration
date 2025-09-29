@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'jmeter-tests/**'  # Ignore changes in JMeter scripts
 
 jobs:
   trigger-pipeline:
