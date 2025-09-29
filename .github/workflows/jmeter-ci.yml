@@ -26,7 +26,7 @@ jobs:
       # shell: cmd
 
       - name: Upload GMO-Auto Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: gmo-auto-report
           path: results/gmo-report

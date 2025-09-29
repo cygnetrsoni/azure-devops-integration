@@ -1,0 +1,11 @@
+﻿{
+  "agentId": 2,
+  "agentName": "CIPL-LPT-1200",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus15.actions.githubusercontent.com/iRCU1Qhdo81E1C1lPLr9RkZx0rtL9OdNAfWuRTWs6QWtUoc29C/",
+  "gitHubUrl": "https://github.com/cygnetrsoni/azure-devops-integration",
+  "workFolder": "_work",
+  "useV2Flow": true,
+  "serverUrlV2": "https://broker.actions.githubusercontent.com/"
+}
