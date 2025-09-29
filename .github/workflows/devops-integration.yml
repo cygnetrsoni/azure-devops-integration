@@ -13,7 +13,6 @@ jobs:
     - name: Trigger Azure DevOps Pipeline
       uses: Azure/pipelines@v1
       with:
+        azure-devops-project-url: https://dev.azure.com/rajeshsoni0280/PerformanceTesting
+        azure-pipeline-name: JMeterPerformance
         azure-devops-token: ${{ secrets.AZURE_DEVOPS_PAT }}
-        organization: https://dev.azure.com/rajeshsoni0280
-        project: PerformanceTesting
-        pipeline: JMeterPerformance
