@@ -14,11 +14,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        
+
       - name: Prepare results folder
         run: |
             if not exist "results" mkdir "results"
             if not exist "results\gmo-report" mkdir "results\gmo-report"
+            if not exist "results\jpetstore-report" mkdir "results\jpetstore-report"  # 👈 Added JPetStore report dir
         shell: cmd
 
       - name: Run GMO-Auto Test
@@ -26,10 +27,10 @@ jobs:
           "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\GMO-Auto.jmx -l results\gmo-results.jtl -e -o results\gmo-report
         shell: cmd
 
-      # - name: Run JPetStore Test
-      # run: |
-      #   "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\JPetStore.jmx -l results\jpetstore-results.jtl -e -o results\jpetstore-report
-      # shell: cmd
+      - name: Run JPetStore Test  # 👈 Uncommented
+        run: |
+          "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\JPetStore.jmx -l results\jpetstore-results.jtl -e -o results\jpetstore-report
+        shell: cmd
 
       - name: Upload GMO-Auto Report
         uses: actions/upload-artifact@v4
@@ -37,8 +38,8 @@ jobs:
           name: gmo-auto-report
           path: results/gmo-report
 
-      # - name: Upload JPetStore Report
-      #  uses: actions/upload-artifact@v3
-      #  with:
-      #    name: jpetstore-report
-      #    path: results/jpetstore-report
+      - name: Upload JPetStore Report  # 👈 Uncommented and uses set to @v4 for consistency
+        uses: actions/upload-artifact@v4
+        with:
+          name: jpetstore-report
+          path: results/jpetstore-report
