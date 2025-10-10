@@ -1,0 +1,38 @@
+# Ignore GitHub Actions self-hosted runner
+actions-runner/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.swp
+
+# Ignore IDE/editor folders
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Ignore build/output folders (if any)
+dist/
+build/
+out/
+
+# Ignore JMeter temporary files (if applicable)
+jmeter.log
+*.jtl
+*.bak
+*.tmp
+
+# Ignore node_modules if using Node.js
+node_modules/
+
+# Ignore Python virtual environments (if applicable)
+venv/
+__pycache__/
+*.pyc
