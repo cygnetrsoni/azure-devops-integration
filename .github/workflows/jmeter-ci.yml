@@ -1,4 +1,17 @@
-steps:
+name: CI - JMeter Performance Tests
+
+on:
+push:
+branches:
+- main
+
+workflow_dispatch: # Allows manual trigger
+
+jobs:
+run-jmeter:
+runs-on: self-hosted # Assumes this is a Windows runner with JMeter installed
+
+steps: # <-- CORRECTED: This now belongs to the 'run-jmeter' job
   - name: Checkout Repository
     uses: actions/checkout@v3
 
