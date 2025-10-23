@@ -1,59 +1,53 @@
 name: CI - JMeter Performance Tests
-
 on:
-push:
-branches:
-- main
-
-workflow_dispatch: # Allows manual trigger
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual trigger
 
 jobs:
-run-jmeter:
-runs-on: self-hosted # Assumes this is a Windows runner with JMeter installed
+  run-jmeter:
+    runs-on: self-hosted # Assumes this is a Windows runner with JMeter installed
 
-steps: # <-- CORRECTED: This now belongs to the 'run-jmeter' job
-  - name: Checkout Repository
-    uses: actions/checkout@v3
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-  - name: Prepare results folder
-    # Uses Windows cmd shell to create necessary directories for reports
-    run: |
-      if not exist "results" mkdir "results"
-      if not exist "results\gmo-report" mkdir "results\gmo-report"
-      if not exist "results\jpetstore-report" mkdir "results\jpetstore-report"
-      if not exist "results\getposts-report" mkdir "results\getposts-report"
-    shell: cmd
+      - name: Prepare results folder
+        run: |
+          if not exist "results" mkdir "results"
+          if not exist "results\gmo-report" mkdir "results\gmo-report"
+          if not exist "results\jpetstore-report" mkdir "results\jpetstore-report"
+          if not exist "results\getposts-report" mkdir "results\getposts-report"
+        shell: cmd
+      - name: Run GMO-Auto Test
+        run: |
+          "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\GMO-Auto.jmx -l results\gmo-results.jtl -e -o results\gmo-report
+        shell: cmd
+      - name: Run JPetStore Test
+        run: |
+          "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\JPetStore.jmx -l results\jpetstore-results.jtl -e -o results\jpetstore-report
+        shell: cmd
 
-  - name: Run GMO-Auto Test
-    # -n: non-GUI mode; -t: test file; -l: results log file; -e -o: generate HTML report
-    run: |
-      "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\GMO-Auto.jmx -l results\gmo-results.jtl -e -o results\gmo-report
-    shell: cmd
+      - name: Run GetPosts Test
+        run: |
+          "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\GetPosts.jmx -l results\getposts-results.jtl -e -o results\getposts-report
+        shell: cmd
 
-  - name: Run JPetStore Test
-    run: |
-      "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\JPetStore.jmx -l results\jpetstore-results.jtl -e -o results\jpetstore-report
-    shell: cmd
-    
-  - name: Run GetPosts Test
-    run: |
-      "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\GetPosts.jmx -l results\getposts-results.jtl -e -o results\getposts-report
-    shell: cmd
+      - name: Upload GMO-Auto Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmo-auto-report
+          path: results/gmo-report
 
-  - name: Upload GMO-Auto Report
-    uses: actions/upload-artifact@v4
-    with:
-      name: gmo-auto-report
-      path: results/gmo-report
+      - name: Upload JPetStore Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jpetstore-report
+          path: results/jpetstore-report
 
-  - name: Upload JPetStore Report
-    uses: actions/upload-artifact@v4
-    with:
-      name: jpetstore-report
-      path: results/jpetstore-report
-
-  - name: Upload GetPosts Report
-    uses: actions/upload-artifact@v4
-    with:
-      name: getposts-report
-      path: results/getposts-report
+      - name: Upload GetPosts Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: getposts-report
+          path: results/getposts-report
