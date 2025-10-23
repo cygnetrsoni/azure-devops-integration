@@ -18,8 +18,9 @@ jobs:
       - name: Prepare results folder
         run: |
             if not exist "results" mkdir "results"
-            if not exist "results\gmo-report" mkdir "results\gmo-report"
-            if not exist "results\jpetstore-report" mkdir "results\jpetstore-report"  # 👈 Added JPetStore report dir
+            if not exist "results\gmo-report" mkdir "results\gmo-report"    # 👈 Added GMO report dir
+            if not exist "results\jpetstore-report" mkdir "results\jpetstore-report"    # 👈 Added JPetStore report dir
+            if not exist "results\getposts-report" mkdir "results\getposts-report"    # 👈 Added GetPosts report dir
         shell: cmd
 
       - name: Run GMO-Auto Test
@@ -30,6 +31,11 @@ jobs:
       - name: Run JPetStore Test  # 👈 Uncommented
         run: |
           "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\JPetStore.jmx -l results\jpetstore-results.jtl -e -o results\jpetstore-report
+        shell: cmd
+        
+       - name: Run GetPosts Test  # 👈 Uncommented
+        run: |
+          "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\GetPosts.jmx -l results\getposts-results.jtl -e -o results\getposts-report
         shell: cmd
 
       - name: Upload GMO-Auto Report
@@ -43,3 +49,9 @@ jobs:
         with:
           name: jpetstore-report
           path: results/jpetstore-report
+
+      - name: Upload GetPosts Report  # 👈 Uncommented and uses set to @v4 for consistency
+        uses: actions/upload-artifact@v4
+        with:
+          name: getposts-report
+          path: results/getposts-report
