@@ -1,57 +1,46 @@
-name: CI - JMeter Performance Tests
+steps:
+  - name: Checkout Repository
+    uses: actions/checkout@v3
 
-on:
-  push:
-    branches:
-      - main
+  - name: Prepare results folder
+    # Uses Windows cmd shell to create necessary directories for reports
+    run: |
+      if not exist "results" mkdir "results"
+      if not exist "results\gmo-report" mkdir "results\gmo-report"
+      if not exist "results\jpetstore-report" mkdir "results\jpetstore-report"
+      if not exist "results\getposts-report" mkdir "results\getposts-report"
+    shell: cmd
 
-  workflow_dispatch:  # 👈 allows manual trigger
+  - name: Run GMO-Auto Test
+    # -n: non-GUI mode; -t: test file; -l: results log file; -e -o: generate HTML report
+    run: |
+      "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\GMO-Auto.jmx -l results\gmo-results.jtl -e -o results\gmo-report
+    shell: cmd
 
-jobs:
-  run-jmeter:
-    runs-on: self-hosted  # Assumes this is a Windows runner with JMeter installed
+  - name: Run JPetStore Test
+    run: |
+      "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\JPetStore.jmx -l results\jpetstore-results.jtl -e -o results\jpetstore-report
+    shell: cmd
+    
+  - name: Run GetPosts Test
+    run: |
+      "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\GetPosts.jmx -l results\getposts-results.jtl -e -o results\getposts-report
+    shell: cmd
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+  - name: Upload GMO-Auto Report
+    uses: actions/upload-artifact@v4
+    with:
+      name: gmo-auto-report
+      path: results/gmo-report
 
-      - name: Prepare results folder
-        run: |
-            if not exist "results" mkdir "results"
-            if not exist "results\gmo-report" mkdir "results\gmo-report"    # 👈 Added GMO report dir
-            if not exist "results\jpetstore-report" mkdir "results\jpetstore-report"    # 👈 Added JPetStore report dir
-            if not exist "results\getposts-report" mkdir "results\getposts-report"    # 👈 Added GetPosts report dir
-        shell: cmd
+  - name: Upload JPetStore Report
+    uses: actions/upload-artifact@v4
+    with:
+      name: jpetstore-report
+      path: results/jpetstore-report
 
-      - name: Run GMO-Auto Test
-        run: |
-          "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\GMO-Auto.jmx -l results\gmo-results.jtl -e -o results\gmo-report
-        shell: cmd
-
-      - name: Run JPetStore Test  # 👈 Uncommented
-        run: |
-          "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\JPetStore.jmx -l results\jpetstore-results.jtl -e -o results\jpetstore-report
-        shell: cmd
-        
-       - name: Run GetPosts Test  # 👈 Uncommented
-        run: |
-          "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\GetPosts.jmx -l results\getposts-results.jtl -e -o results\getposts-report
-        shell: cmd
-
-      - name: Upload GMO-Auto Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: gmo-auto-report
-          path: results/gmo-report
-
-      - name: Upload JPetStore Report  # 👈 Uncommented and uses set to @v4 for consistency
-        uses: actions/upload-artifact@v4
-        with:
-          name: jpetstore-report
-          path: results/jpetstore-report
-
-      - name: Upload GetPosts Report  # 👈 Uncommented and uses set to @v4 for consistency
-        uses: actions/upload-artifact@v4
-        with:
-          name: getposts-report
-          path: results/getposts-report
+  - name: Upload GetPosts Report
+    uses: actions/upload-artifact@v4
+    with:
+      name: getposts-report
+      path: results/getposts-report
