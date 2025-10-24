@@ -220,7 +220,7 @@
             </elementProp>
             <elementProp name="application" elementType="Argument">
               <stringProp name="Argument.name">application</stringProp>
-              <stringProp name="Argument.value">JPetSore</stringProp>
+              <stringProp name="Argument.value">JPetStore</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="measurement" elementType="Argument">

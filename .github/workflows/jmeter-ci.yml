@@ -1,9 +1,12 @@
 name: CI - JMeter Performance Tests
+
 on:
   push:
     branches:
       - main
   workflow_dispatch: # Allows manual trigger
+env:
+  JMETER_PATH: D:\apache-jmeter-5.4.3\bin\jmeter.bat
 
 jobs:
   run-jmeter:
@@ -22,16 +25,17 @@ jobs:
         shell: cmd
       - name: Run GMO-Auto Test
         run: |
-          "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\GMO-Auto.jmx -l results\gmo-results.jtl -e -o results\gmo-report
+          "%JMETER_PATH%" -n -t jmeter-tests\GMO-Auto.jmx -l results\gmo-results.jtl -e -o results\gmo-report
         shell: cmd
+
       - name: Run JPetStore Test
         run: |
-          "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\JPetStore.jmx -l results\jpetstore-results.jtl -e -o results\jpetstore-report
+          "%JMETER_PATH%" -n -t jmeter-tests\JPetStore.jmx -l results\jpetstore-results.jtl -e -o results\jpetstore-report
         shell: cmd
 
       - name: Run GetPosts Test
         run: |
-          "D:\apache-jmeter-5.4.3\bin\jmeter.bat" -n -t jmeter-tests\GetPosts.jmx -l results\getposts-results.jtl -e -o results\getposts-report
+          "%JMETER_PATH%" -n -t jmeter-tests\GetPosts.jmx -l results\getposts-results.jtl -e -o results\getposts-report
         shell: cmd
 
       - name: Upload GMO-Auto Report
