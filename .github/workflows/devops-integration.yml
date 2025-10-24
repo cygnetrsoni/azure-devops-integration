@@ -4,17 +4,18 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - 'jmeter-tests/**'  # Ignore changes in JMeter scripts
+    # paths-ignore:
+    #   - 'jmeter-tests/**'  # Ignore changes in JMeter scripts
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
 
 jobs:
   trigger-pipeline:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Trigger Azure DevOps Pipeline
-      uses: Azure/pipelines@v1
-      with:
-        azure-devops-project-url: https://dev.azure.com/rajeshsoni0280/PerformanceTesting
-        azure-pipeline-name: JMeterPerformance
-        azure-devops-token: ${{ secrets.AZURE_DEVOPS_PAT }}
+      - name: Trigger Azure DevOps Pipeline
+        uses: Azure/pipelines@v1
+        with:
+          azure-devops-project-url: https://dev.azure.com/rajeshsoni0280/PerformanceTesting
+          azure-pipeline-name: JMeterPerformance
+          azure-devops-token: ${{ secrets.AZURE_DEVOPS_PAT }}
